@@ -39,6 +39,12 @@ def add_repo(alias, type_, location):
 
 
 @cli.command()
+@click.option("--alias", help='gin repo alias', required=True)
+def repo_remove(alias):
+    core.repo_remove(alias, repo_path())
+
+
+@cli.command()
 def list_repos():
     repos = core.get_repos(repo_path()).get('repos', {}).keys()
     click.echo(f"gin repos {list(repos)}")

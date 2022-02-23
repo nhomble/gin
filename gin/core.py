@@ -42,6 +42,17 @@ def list_gin(alias, repo_path):
         return [f for f in files if not isdir(join(path, f))]
 
 
+def repo_remove(alias, repo_path):
+    d = get_repos(repo_path)
+    with open(repo_path, 'w') as f:
+        repos = d.get("repos", {})
+        if alias in repos:
+            del repos[alias]
+        d['repos'] = repos
+
+        json.dump(d, f)
+
+
 def add_repo(alias, repo_type, location, repo_path):
     d = get_repos(repo_path)
     with open(repo_path, 'w') as f:
