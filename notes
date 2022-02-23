@@ -1,0 +1,24 @@
+~/
+  .local/
+      gin/
+        bin/
+          @gin:alias:name:sha1
+          symlink
+        repos
+          alias likew helm
+
+
+
+git script one line simple just do
+
+gin init
+gin update 
+gin add
+gin get
+gin sync
+gin run
+gin list
+gin 
+
+PATH
+  
