@@ -30,7 +30,7 @@ def init():
 @click.option(
     "--type", "-t", "type_",
     help="type of gin repo",
-    type=click.Choice(['local']),
+    type=click.Choice(['local', 'http']),
     required=True
 )
 @click.option("--location", help="url for gin repo", required=True)

@@ -6,7 +6,8 @@ setup(
     py_modules=['gin'],
     install_requires=[
         'Click',
-        'click_completion'
+        'click_completion',
+        "requests"
     ],
     entry_points='''
         [console_scripts]

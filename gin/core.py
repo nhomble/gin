@@ -4,6 +4,7 @@ import stat
 from os.path import isdir, join, expanduser
 
 import click
+import requests
 
 
 def get_repos(repo_path):
@@ -16,17 +17,23 @@ def get_repos(repo_path):
 
 def get_gin(alias, name, repo_path, bin_path):
     meta = get_repos(repo_path)['repos'].get(alias, None)
+    dest = join(bin_path, f"@gin:{alias}:{name}")
     if meta is None:
         fail("no alias " + alias)
     if meta['type'] == "local":
         path = expanduser(meta['location'])
         path = join(path, name)
-        dest = join(bin_path, f"@gin:{alias}:{name}")
+
         with open(path, 'r') as frm:
             with open(dest, 'w') as to:
                 to.write(frm.read())
-        st = os.stat(dest)
-        os.chmod(dest, st.st_mode | stat.S_IXUSR | stat.S_IXOTH)
+
+    elif meta['type'] == 'http':
+        r = requests.get(meta['location'], allow_redirects=True)
+        open(dest, 'wb').write(r.content)
+
+    st = os.stat(dest)
+    os.chmod(dest, st.st_mode | stat.S_IXUSR | stat.S_IXOTH)
 
 
 def fail(msg):

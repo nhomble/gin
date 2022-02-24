@@ -22,3 +22,7 @@ gin
 
 PATH
   
+--
+check for repo conflicts
+fix name ordering
+custom annotations
