@@ -12,7 +12,7 @@ def cli():
     pass
 
 
-@cli.command()
+@cli.command(help="initialize gin for current user")
 def init():
     d = click.get_app_dir(_APP)
     bin_ = os.path.join(d, "bin")
@@ -25,7 +25,7 @@ def init():
     click.echo(f"Add to $PATH \"{bin_}")
 
 
-@cli.command()
+@cli.command(help="add gin repository")
 @click.option("--alias", help='gin repo alias', required=True)
 @click.option(
     "--type", "-t", "type_",
@@ -34,32 +34,32 @@ def init():
     required=True
 )
 @click.option("--location", help="url for gin repo", required=True)
-def add_repo(alias, type_, location):
+def add(alias, type_, location):
     core.add_repo(alias, type_, location, repo_path())
 
 
-@cli.command()
+@cli.command(help="remove gin repository")
 @click.option("--alias", help='gin repo alias', required=True)
-def repo_remove(alias):
+def remove(alias):
     core.repo_remove(alias, repo_path())
 
 
-@cli.command()
-def list_repos():
+@cli.command(help="list all gin repositories mapped for user")
+def list():
     repos = core.get_repos(repo_path()).get('repos', {}).keys()
     click.echo(f"gin repos {list(repos)}")
 
 
-@cli.command()
+@cli.command(help="get a gin from a repository alias")
 @click.option("--alias", help='gin repo alias', required=True)
 @click.option("--name", help='name of gin in alias', required=True)
-def get_gin(alias, name):
+def get(alias, name):
     core.get_gin(alias, name, repo_path(), bin_path())
 
 
-@cli.command()
+@cli.command(help="search for gins available with current repositories")
 @click.option("--alias", help='gin repo alias', required=True)
-def list_gin(alias):
+def search(alias):
     click.echo(f"Available gin in {alias}\n {core.list_gin(alias, repo_path())}")
 
 
