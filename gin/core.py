@@ -3,6 +3,8 @@ import os
 import stat
 from os.path import isdir, join, expanduser
 
+import click
+
 
 def get_repos(repo_path):
     with open(repo_path, 'r') as f:
@@ -57,6 +59,9 @@ def add_repo(alias, repo_type, location, repo_path):
     d = get_repos(repo_path)
     with open(repo_path, 'w') as f:
         repos = d.get("repos", {})
+        if alias in repos:
+            raise click.UsageError(
+                f"alias={alias} already exists - choose a different name or remove the existing repo")
         repo = repos.get(alias, {})
         repo['type'] = repo_type
         repo['location'] = location
