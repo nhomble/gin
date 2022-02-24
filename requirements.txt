@@ -1,1 +1,2 @@
 click~=8.0.4
+click_completion~=0.5.2
