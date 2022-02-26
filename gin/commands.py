@@ -22,7 +22,9 @@ def init():
     if not os.path.exists(r):
         with open(r, 'w') as f:
             f.write("{}")
-    click.echo(f"Add to $PATH \"{bin_}")
+    if not os.path.exists(os.path.join(d, "var")):
+        os.makedirs(os.path.join(d, "var"))
+    click.echo(f"Add to $PATH \"{bin_}\"")
 
 
 @cli.command(help="add gin repository")
