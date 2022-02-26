@@ -6,9 +6,24 @@ from os.path import isdir, join, expanduser
 import click
 import requests
 
+from gin.paths import repo_path, var_path
 
-def get_repos(repo_path):
-    with open(repo_path, 'r') as f:
+
+def sh(cmd):
+    print(cmd)
+    os.popen(cmd).close()
+
+
+def sync_repo(alias, repo_path, var_path):
+    d = get_repos(repo_path)
+    data = d["repos"][alias]
+    dest = os.path.join(var_path, alias)
+
+    sh(f"git -C pull \"{dest}\"")
+
+
+def get_repos():
+    with open(repo_path(), 'r') as f:
         s = f.read()
         if s == "":
             return {"repos": {}}
@@ -51,28 +66,23 @@ def list_gin(alias, repo_path):
         return [f for f in files if not isdir(join(path, f))]
 
 
-def repo_remove(alias, repo_path):
-    d = get_repos(repo_path)
-    with open(repo_path, 'w') as f:
-        repos = d.get("repos", {})
-        if alias in repos:
-            del repos[alias]
-        d['repos'] = repos
-
-        json.dump(d, f)
+def repo_remove(alias):
+    if not repo_exists(alias):
+        raise click.UsageError(f"alias={alias} does not exist!")
+    dest = os.path.join(var_path(), alias)
+    sh(f"rm -rf \"{dest}\"")
 
 
-def add_repo(alias, repo_type, location, repo_path):
-    d = get_repos(repo_path)
-    with open(repo_path, 'w') as f:
-        repos = d.get("repos", {})
-        if alias in repos:
-            raise click.UsageError(
-                f"alias={alias} already exists - choose a different name or remove the existing repo")
-        repo = repos.get(alias, {})
-        repo['type'] = repo_type
-        repo['location'] = location
-        repos[alias] = repo
-        d['repos'] = repos
+def repo_list():
+    return [f for f in os.listdir(var_path()) if isdir(join(var_path(), f))]
 
-        json.dump(d, f)
+
+def repo_exists(alias):
+    return os.path.exists(os.path.join(var_path(), alias))
+
+
+def add_repo(alias, location):
+    if repo_exists(alias):
+        raise click.UsageError(f"alias={alias} already exists!")
+    dest = os.path.join(var_path(), alias)
+    sh(f"git clone \"{location}\" \"{dest}\"")
