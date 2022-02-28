@@ -51,12 +51,10 @@ def list():
 @click.option("--alias", help='gin repo alias', required=True)
 @click.option("--name", help='name of gin in alias', required=True)
 def get(alias, name):
-    pass
-    core.get_gin(alias, name, repo_path(), bin_path())
+    core.get_gin(alias, name)
 
 
 @cli.command(help="search for gins available with current repositories")
 @click.option("--alias", help='gin repo alias', required=True)
 def search(alias):
-    pass
-    click.echo(f"Available gin in {alias}\n {core.list_gin(alias, repo_path())}")
+    click.echo(f"Available gin in {alias}\n {core.list_gin(alias)}")

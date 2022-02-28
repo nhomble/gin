@@ -10,6 +10,13 @@
 
 
 git script one line simple just do
+git installer
+
+everything I like about gists
+    simple - micro repos
+    sharing
+    not tied to a certain method, devs know git
+    
 
 gin init
 gin update 
@@ -26,3 +33,6 @@ PATH
 check for repo conflicts
 fix name ordering
 custom annotations
+
+gin or gin-package
+test_file = click.open_file('test.txt', 'w')
