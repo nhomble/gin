@@ -10,6 +10,16 @@ from gin.exceptions import AliasDoesNotExist
 from gin.paths import repo_path, var_path, bin_path
 
 
+def init():
+    if not os.path.exists(bin_path()):
+        os.makedirs(bin_path())
+    if not os.path.exists(repo_path()):
+        with open(repo_path(), 'w') as f:
+            f.write("{}")
+    if not os.path.exists(var_path()):
+        os.makedirs(var_path())
+
+
 def sh(cmd):
     print(cmd)
     os.popen(cmd).close()
