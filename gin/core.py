@@ -1,12 +1,9 @@
 import json
 import os
 import stat
-from os.path import isdir, join, expanduser
+from os.path import isdir, join
 
-import click
-import requests
-
-from gin.exceptions import AliasDoesNotExist
+from gin.exceptions import AliasDoesNotExist, AliasConflict
 from gin.paths import repo_path, var_path, bin_path
 
 
@@ -72,6 +69,6 @@ def repo_exists(alias):
 
 def add_repo(alias, location):
     if repo_exists(alias):
-        raise AliasDoesNotExist(alias)
+        raise AliasConflict(alias)
     dest = os.path.join(var_path(), alias)
     sh(f"git clone \"{location}\" \"{dest}\"")
