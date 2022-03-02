@@ -35,8 +35,9 @@ def get_repos():
 def get_gin(alias, name):
     if not repo_exists(alias):
         raise AliasDoesNotExist(alias)
-
-    dest = ""
+    dest = join(bin_path(), f"_gin_{alias}_{name}")
+    source = os.path.join(var_path(), alias, name)
+    shutil.copyfile(source, dest)
 
     st = os.stat(dest)
     os.chmod(dest, st.st_mode | stat.S_IXUSR | stat.S_IXOTH)
