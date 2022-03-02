@@ -15,3 +15,7 @@ def bin_path():
 
 def var_path():
     return os.path.join(click.get_app_dir(APP_NAME), "var")
+
+
+def log_path():
+    return os.path.join(click.get_app_dir(APP_NAME), "logs.txt")

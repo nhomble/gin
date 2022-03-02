@@ -3,6 +3,7 @@ import os
 import click
 
 import gin.core as core
+from gin.log import LOG
 from gin.paths import var_path, repo_path, bin_path
 
 
@@ -17,6 +18,7 @@ def init(interactive=False):
     initializes the directory structure for gin for the current user
     :return:
     """
+    LOG.info("asd")
     core.init()
     click.echo(f"Add to $PATH \"{bin_path()}\"")
 
