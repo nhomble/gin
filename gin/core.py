@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import stat
 from os.path import isdir, join
 
@@ -17,11 +18,6 @@ def init():
             f.write("{}")
     if not os.path.exists(var_path()):
         os.makedirs(var_path())
-
-
-def sh(cmd):
-    print(cmd)
-    os.popen(cmd).close()
 
 
 def sync_repo(alias):
@@ -58,7 +54,7 @@ def repo_remove(alias):
     if not repo_exists(alias):
         raise AliasDoesNotExist(alias)
     dest = os.path.join(var_path(), alias)
-    sh(f"rm -rf \"{dest}\"")
+    shutil.rmtree(dest)
 
 
 def repo_list():
