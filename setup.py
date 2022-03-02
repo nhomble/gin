@@ -7,7 +7,8 @@ setup(
     install_requires=[
         'Click',
         'click_completion',
-        "requests"
+        'requests',
+        'gitpython'
     ],
     entry_points='''
         [console_scripts]

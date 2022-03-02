@@ -6,6 +6,8 @@ from os.path import isdir, join
 from gin.exceptions import AliasDoesNotExist, AliasConflict
 from gin.paths import repo_path, var_path, bin_path
 
+from git import Repo
+
 
 def init():
     if not os.path.exists(bin_path()):
@@ -23,7 +25,7 @@ def sh(cmd):
 
 
 def sync_repo(alias):
-    sh(f"git -C \"{os.path.join(var_path(), alias)}\" pull")
+    Repo(os.path.join(var_path(), alias)).remotes.origin.pull()
 
 
 def get_repos():
@@ -71,4 +73,4 @@ def add_repo(alias, location):
     if repo_exists(alias):
         raise AliasConflict(alias)
     dest = os.path.join(var_path(), alias)
-    sh(f"git clone \"{location}\" \"{dest}\"")
+    Repo.clone_from(location, dest)
